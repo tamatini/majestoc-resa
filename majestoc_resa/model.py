@@ -1,43 +1,47 @@
 from . import db
+from sqlalchemy import Integer, Column, String, ForeignKey, DateTime
+from starter import app
+from datetime import date
 
 
-class Seance(db.Model):
-    """Item du planning des séances"""
-    def __init__(self, id_sceance, film, date_debut, date_fin, duree_sceance):
-        self.id_sceance = id_sceance
-        self.film = film
-        self.date_debut = date_debut
-        self.date_fin = date_fin
-        self.duree_sceance = duree_sceance
-    pass
+app.config['SQLALCHEMY_DATABASE_URI'] = ('sqlite:///resa.db')
+#engine = create_engine('sqlite:///resa.db')
 
 
 class Film(db.Model):
     """Modele d'un film avec son nom et sa durée"""
-    def __init__(self, nom, duree, sypnosis):
-        self.nom = nom
-        self.duree = duree
-        self.sypnosis = sypnosis
-    pass
+    id_film = Column(Integer, nullable=False, unique=False, primary_key=True)
+    nom_film = Column(String(30), nullable=False, unique=False)
+    nombre_place = Column(Integer, nullable=False, unique=True)
+    duree_film = Column(Integer, nullable=False, unique=False)
+
+
+class Seance(db.Model):
+    """Item du planning des séances"""
+    id_seance = Column(Integer, nullable=False, unique=True, primary_key=True)
+    film = Column(String, ForeignKey("Film.nom_film"), unique=False, nullable=False)
+    date_debut = Column(String(10), nullable=False, unique=False)
+    date_fin = Column(String(10), nullable=False, unique=False)
+    duree_seance = Column(Integer, nullable=False, unique=False, date)
 
 
 class Salle(db.Model):
     """Item du planning des salles"""
-    def __init__(self, cinema, numero_salle, capacite_salle, numero_siege):
-        self.cinema = cinema
-        self.numero_salle = numero_salle
-        self.capacite_salle = capacite_salle
-        self.numero_siege = numero_siege
-    pass
+    id_cinema = Column(Integer, nullable=False, unique=True, primary_key=True)
+    cinema = Column(String(15), nullable=False, unique=True)
+    numero_salle = Column(Integer, nullable=False, unique=False)
+    capacite_salle = Column(Integer, nullable=False, unique=False)
+    numero_siege = Column(Integer, nullable=False, unique=False)
 
 
 class Resa(db.Model):
-    """Materialise une réservation de séance"""
-    def __init__(self, nom_client, prenom_client, siege_reserver):
-        self.nom_client = nom_client
-        self.prenom_client = prenom_client
-        self.siege_reserver = siege_reserver
-    pass
+    id_client = Column(Integer, nullable=False, unique=True, primary_key=True)
+    nom_client = Column(String(30), nullable=False, unique=False)
+    prenom_client = Column(String(30), nullable=False, unique=False)
+    siege_reserver = Column(Integer, ForeignKey("Salle.numero_siege"), nullable=False, unique=False)
+    seance_resa = Column(Integer, ForeignKey("Seance.id_seance"), nullable=False, unique=False)
+    date_resa = Column(DateTime, nullable=False)
+
 
 # Est-ce qu'il faut un compte ?
 # class User(db.Model):

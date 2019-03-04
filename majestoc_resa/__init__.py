@@ -1,3 +1,4 @@
 from flask_sqlalchemy import SQLAlchemy
+from starter import app
 
-db = SQLAlchemy()
+db = SQLAlchemy(app)
