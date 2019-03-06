@@ -1,11 +1,7 @@
-from flask import Flask
-from majestoc_resa.services import api
-
-app = Flask(__name__)
+from majestoc_resa.services import api, app
 
 # the API-versioned way
 # app.register_blueprint(blueprint, url_prefix='/api/1')
-
 # the regular way
 
 api.init_app(app)
