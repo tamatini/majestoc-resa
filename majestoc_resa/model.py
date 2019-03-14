@@ -5,8 +5,9 @@ class Film(db.Model):
     """Modele d'un film avec son nom et sa durée"""
     id_film = db.Column(db.Integer, nullable=False, unique=False, primary_key=True)
     nom_film = db.Column(db.String(30), nullable=False, unique=False)
-    nombre_place = db.Column(db.Integer, nullable=False, unique=True)
+    nombre_place = db.Column(db.Integer, nullable=False, unique=False)
     duree_film = db.Column(db.Integer, nullable=False, unique=False)
+    sypnosis = db.Column(db.String(250), unique=False)
 
 
 class Seance(db.Model):
